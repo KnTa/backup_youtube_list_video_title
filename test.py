@@ -6,17 +6,12 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 
 
-def main():
+def youtube_list_backup(list_url):
     tag_video_tile_parent_element = 'ytd-playlist-video-renderer'
     tag_video_title_id = "#video-title"
 
     tag_list_title_parent_element = 'yt-formatted-string'
     tag_list_title_class = '.yt-simple-endpoint'
-
-    list_url = 'https://www.youtube.com/playlist?list=PLfrV5gSr2fGzZkGrE9dsshdpxzhcmKh6N'
-
-    if len(sys.argv) != 1:
-        list_url = sys.argv[1]
 
     browser = webdriver.Firefox(executable_path=r"geckodriver.exe")
     time.sleep(3)
@@ -46,8 +41,16 @@ def main():
         print(title_name)
         book_sheet.write(counter, 0, counter)
         book_sheet.write(counter, 1, title.text)
-        counter = counter+1
+        counter = counter + 1
 
     workbook.save('{}.xls'.format(time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())))
+
+
+def main():
+    list_url = 'https://www.youtube.com/playlist?list=PLfrV5gSr2fGzZkGrE9dsshdpxzhcmKh6N'
+    if len(sys.argv) != 1:
+        list_url = sys.argv[1]
+    youtube_list_backup(list_url)
+
 
 main()
